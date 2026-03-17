@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Module 1 — Vision & Direction</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue-50:#E6F1FB;--blue-100:#B5D4F4;--blue-400:#378ADD;--blue-600:#185FA5;--blue-800:#0C447C;
+  --purple-50:#EEEDFE;--purple-100:#CECBF6;--purple-400:#7F77DD;--purple-600:#534AB7;--purple-800:#3C3489;
+  --teal-50:#E1F5EE;--teal-100:#9FE1CB;--teal-400:#1D9E75;--teal-600:#0F6E56;--teal-800:#085041;
+  --coral-50:#FAECE7;--coral-100:#F5C4B3;--coral-600:#993C1D;--coral-800:#712B13;
+  --amber-50:#FAEEDA;--amber-600:#854F0B;
+  --gray-50:#F7F6F4;--gray-100:#EEECE8;--gray-200:#D9D7D0;--gray-300:#C4C2BA;
+  --gray-500:#888780;--gray-700:#5F5E5A;--gray-900:#1C1C1A;
+  --radius-md:10px;--radius-lg:16px;
+  --font-display:'DM Serif Display',Georgia,serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);font-weight:400;background:#FAFAF8;color:var(--gray-900);min-height:100vh;line-height:1.6}
+.shell{max-width:820px;margin:0 auto;padding:2.5rem 1.25rem 5rem}
+
+/* header */
+.mod-eye{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-600);margin-bottom:8px}
+.mod-title{font-family:var(--font-display);font-size:42px;color:var(--gray-900);line-height:1.1;margin-bottom:8px}
+.mod-sub{font-size:15px;color:var(--gray-700);margin-bottom:2rem;max-width:520px}
+
+/* progress nav */
+.prog-outer{display:flex;border:0.5px solid var(--gray-200);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:6px}
+.prog-step{flex:1;padding:11px 4px;text-align:center;font-size:11px;font-weight:500;cursor:pointer;border-right:0.5px solid var(--gray-200);background:#fff;color:var(--gray-500);transition:background .2s,color .2s}
+.prog-step:last-child{border-right:none}
+.prog-step.active{background:var(--blue-600);color:#fff}
+.prog-step.done{background:var(--teal-50);color:var(--teal-600)}
+.prog-bar{height:3px;background:var(--gray-100);border-radius:2px;margin-bottom:2.5rem;overflow:hidden}
+.prog-fill{height:100%;background:var(--blue-600);border-radius:2px;transition:width .4s ease}
+
+/* sections */
+.section{display:none;animation:fadeUp .3s ease}
+.section.visible{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.sec-title{font-family:var(--font-display);font-size:28px;color:var(--gray-900);margin-bottom:6px}
+.sec-sub{font-size:14px;color:var(--gray-700);margin-bottom:1.5rem;line-height:1.7;max-width:560px}
+
+/* cards */
+.card{background:#fff;border:0.5px solid var(--gray-200);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:1rem}
+.card-label{font-size:11px;font-weight:500;color:var(--gray-500);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+
+/* inputs */
+input[type=text],input[type=email],textarea{width:100%;font-family:var(--font-body);font-size:14px;padding:10px 13px;border:0.5px solid var(--gray-200);border-radius:var(--radius-md);background:var(--gray-50);color:var(--gray-900);transition:border-color .15s,box-shadow .15s}
+input[type=text]:focus,input[type=email]:focus,textarea:focus{outline:none;border-color:var(--blue-400);box-shadow:0 0 0 3px rgba(55,138,221,.12);background:#fff}
+textarea{min-height:80px;resize:vertical;line-height:1.6}
+label{display:block;font-size:13px;color:var(--gray-700);margin-bottom:5px;margin-top:14px}
+label:first-of-type{margin-top:0}
+
+/* chips */
+.chip-grid{display:grid;gap:8px;margin-top:6px}
+.chip-2{grid-template-columns:repeat(2,1fr)}
+.chip-3{grid-template-columns:repeat(3,1fr)}
+.opt-chip{display:flex;align-items:center;gap:9px;padding:10px 13px;border:0.5px solid var(--gray-200);border-radius:var(--radius-md);cursor:pointer;background:var(--gray-50);font-size:13px;color:var(--gray-900);transition:all .15s}
+.opt-chip:hover{border-color:var(--blue-400);background:var(--blue-50)}
+.opt-chip.selected{background:var(--blue-50);border-color:var(--blue-400);color:var(--blue-800);font-weight:500}
+.opt-letter{width:22px;height:22px;border-radius:50%;border:0.5px solid var(--gray-200);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;color:var(--gray-500)}
+.opt-chip.selected .opt-letter{background:var(--blue-600);border-color:var(--blue-600);color:#fff}
+
+/* values */
+.val-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1rem}
+.val-chip{padding:9px 10px;border:0.5px solid var(--gray-200);border-radius:var(--radius-md);cursor:pointer;text-align:center;font-size:13px;color:var(--gray-700);background:var(--gray-50);transition:all .15s;user-select:none}
+.val-chip:hover{border-color:var(--blue-400);color:var(--blue-600)}
+.val-chip.selected{background:var(--blue-50);border-color:var(--blue-400);color:var(--blue-800);font-weight:500}
+.val-hint{font-size:12px;color:var(--gray-500);margin-bottom:10px}
+.rank-pool{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;min-height:36px}
+.rank-chip{padding:7px 13px;border:0.5px solid var(--blue-100);border-radius:99px;font-size:13px;color:var(--blue-800);background:var(--blue-50);cursor:pointer;transition:all .15s}
+.rank-chip:hover{background:var(--blue-100)}
+.rank-item{display:flex;align-items:center;gap:10px;background:#fff;border:0.5px solid var(--gray-200);border-radius:var(--radius-md);padding:9px 13px;margin-bottom:6px;font-size:13px}
+.rank-num{width:24px;height:24px;border-radius:50%;background:var(--blue-600);color:#fff;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* quiz */
+.quiz-card{background:#fff;border:0.5px solid var(--gray-200);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:1rem}
+.quiz-q{font-size:15px;font-weight:500;color:var(--gray-900);margin-bottom:12px}
+.quiz-opts{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;border:0.5px solid var(--gray-200);border-radius:var(--radius-md);cursor:pointer;background:var(--gray-50);transition:all .15s}
+.quiz-opt:hover{border-color:var(--blue-400)}
+.quiz-opt.selected{background:var(--blue-50);border-color:var(--blue-400)}
+.quiz-opt.selected .opt-letter{background:var(--blue-600);border-color:var(--blue-600);color:#fff}
+.quiz-opt-text{font-size:13px;color:var(--gray-900);line-height:1.5}
+.quiz-pg-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1rem}
+
+/* result */
+.result-card{border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem;border:0.5px solid}
+.result-title{font-family:var(--font-display);font-size:22px;margin-bottom:6px}
+.result-desc{font-size:14px;line-height:1.75}
+.result-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.rtag{font-size:12px;font-weight:500;padding:4px 11px;border-radius:99px}
+
+/* goals */
+.goal-sec{margin-bottom:1.5rem}
+.goal-head{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:500;color:var(--gray-900);margin-bottom:10px}
+.goal-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.goal-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.goal-badge{font-size:11px;font-weight:500;padding:3px 9px;border-radius:99px;white-space:nowrap;flex-shrink:0}
+.goal-row input{flex:1}
+.add-btn{font-size:13px;color:var(--blue-600);background:none;border:none;cursor:pointer;padding:2px 0;font-family:var(--font-body)}
+
+/* timeline */
+.tl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tl-card{background:#fff;border:0.5px solid var(--gray-200);border-radius:var(--radius-lg);padding:1.25rem}
+.tl-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.tl-badge{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
+.t30{background:var(--blue-50);color:var(--blue-600)}
+.t90{background:var(--purple-50);color:var(--purple-600)}
+.t1y{background:var(--teal-50);color:var(--teal-600)}
+.tl-label{font-size:14px;font-weight:500;color:var(--gray-900)}
+.tl-sub{font-size:11px;color:var(--gray-500)}
+.tl-card label{font-size:12px}
+.tl-card textarea{min-height:58px;font-size:13px}
+
+/* summary */
+.sum-block{background:var(--gray-50);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:1rem;border:0.5px solid var(--gray-200)}
+.sum-label{font-size:11px;font-weight:500;color:var(--gray-500);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.sum-val{font-size:14px;color:var(--gray-900);line-height:1.7}
+.sum-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pill{font-size:12px;font-weight:500;padding:4px 11px;border-radius:99px;display:inline-block;margin:3px 3px 0 0}
+
+/* email form */
+.email-form{background:#fff;border:0.5px solid var(--gray-200);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem}
+.email-title{font-size:15px;font-weight:500;color:var(--gray-900);margin-bottom:4px}
+.email-sub{font-size:13px;color:var(--gray-500);margin-bottom:1.25rem}
+.email-status{font-size:13px;padding:12px 14px;border-radius:var(--radius-md);margin-top:12px;display:none;line-height:1.6}
+.email-status.success{background:var(--teal-50);color:var(--teal-600);display:block}
+.email-status.error{background:var(--coral-50);color:var(--coral-600);display:block}
+
+/* buttons */
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:2rem}
+.btn-primary{background:var(--blue-600);color:#fff;border:none;border-radius:var(--radius-md);padding:11px 26px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font-body);transition:background .15s}
+.btn-primary:hover{background:var(--blue-800)}
+.btn-primary:disabled{background:var(--gray-200);color:var(--gray-500);cursor:not-allowed}
+.btn-secondary{background:#fff;color:var(--gray-700);border:0.5px solid var(--gray-200);border-radius:var(--radius-md);padding:11px 22px;font-size:14px;cursor:pointer;font-family:var(--font-body);transition:all .15s}
+.btn-secondary:hover{border-color:var(--gray-500);color:var(--gray-900)}
+
+/* setup banner */
+.setup-banner{background:var(--amber-50);border:0.5px solid #EF9F27;border-radius:var(--radius-md);padding:14px 18px;margin-bottom:1.5rem;font-size:13px;color:var(--amber-600);line-height:1.7}
+.setup-banner strong{font-weight:500}
+.setup-banner code{background:rgba(133,79,11,.1);padding:1px 5px;border-radius:4px;font-size:12px}
+
+@media(max-width:580px){
+  .mod-title{font-size:30px}
+  .val-grid{grid-template-columns:repeat(3,1fr)}
+  .tl-grid{grid-template-columns:1fr}
+  .chip-2,.chip-3{grid-template-columns:1fr 1fr}
+  .sum-2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<div class="mod-eye">Module 1 · Real Estate Coaching</div>
+<div class="mod-title">Vision &amp; Direction</div>
+<div class="mod-sub">Clarify who you are, what you stand for, and exactly where you're going in your real estate business.</div>
+
+<div class="setup-banner">
+  <strong>Coach setup — remove this banner before publishing.</strong> Replace the 5 placeholders at the top of the &lt;script&gt;:
+  <code>EMAILJS_PUBLIC_KEY</code> · <code>EMAILJS_SERVICE_ID</code> · <code>COACH_TEMPLATE_ID</code> · <code>STUDENT_TEMPLATE_ID</code> · <code>COACH_EMAIL</code><br><br>
+  <strong>Coach template vars:</strong> <code>{{student_name}}</code> <code>{{student_email}}</code> <code>{{agent_type}}</code> <code>{{top_values}}</code> <code>{{big_why}}</code> <code>{{summary_text}}</code> <code>{{coach_notes}}</code><br>
+  <strong>Student template vars:</strong> <code>{{student_first}}</code> <code>{{agent_type}}</code> <code>{{agent_type_desc}}</code> <code>{{top_values}}</code> <code>{{big_why}}</code> <code>{{goals_list}}</code> <code>{{plan_30}}</code> <code>{{plan_90}}</code> <code>{{plan_1y}}</code>
+</div>
+
+<div class="prog-outer" id="progBar">
+  <div class="prog-step active" onclick="goTo(0)">01 · Intro</div>
+  <div class="prog-step" onclick="goTo(1)">02 · Values</div>
+  <div class="prog-step" onclick="goTo(2)">03 · Agent Type</div>
+  <div class="prog-step" onclick="goTo(3)">04 · Goals</div>
+  <div class="prog-step" onclick="goTo(4)">05 · Plan</div>
+  <div class="prog-step" onclick="goTo(5)">06 · Submit</div>
+</div>
+<div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+
+<!-- ── SEC 0: INTRO ── -->
+<div class="section visible" id="sec0">
+  <div class="sec-title">Let's build your vision</div>
+  <div class="sec-sub">This module walks you through core values, your agent type, goal setting, and a 30–90–1 year plan. At the end, your summary goes to your coach — and a warm personal copy lands in your inbox.</div>
+  <div class="card">
+    <div class="card-label">Your name</div>
+    <input type="text" id="agentName" placeholder="First and last name"/>
+  </div>
+  <div class="card">
+    <div class="card-label">Your email address</div>
+    <input type="email" id="agentEmail" placeholder="your@email.com"/>
+  </div>
+  <div class="card">
+    <div class="card-label">Real estate focus</div>
+    <div class="chip-grid chip-2">
+      <div class="opt-chip" onclick="selChip(this,'focus','Residential Buyer/Seller')"><div class="opt-letter">A</div>Residential Buyer/Seller</div>
+      <div class="opt-chip" onclick="selChip(this,'focus','Luxury & High-End')"><div class="opt-letter">B</div>Luxury &amp; High-End</div>
+      <div class="opt-chip" onclick="selChip(this,'focus','New Construction')"><div class="opt-letter">C</div>New Construction</div>
+      <div class="opt-chip" onclick="selChip(this,'focus','Investment / Investor')"><div class="opt-letter">D</div>Investment / Investor</div>
+      <div class="opt-chip" onclick="selChip(this,'focus','Commercial')"><div class="opt-letter">E</div>Commercial</div>
+      <div class="opt-chip" onclick="selChip(this,'focus','Still Exploring')"><div class="opt-letter">F</div>Still Exploring</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label">Years in real estate</div>
+    <div class="chip-grid chip-3">
+      <div class="opt-chip" onclick="selChip(this,'exp','New (0–1 yr)')"><div class="opt-letter">A</div>New (0–1 yr)</div>
+      <div class="opt-chip" onclick="selChip(this,'exp','Growing (2–4 yr)')"><div class="opt-letter">B</div>Growing (2–4 yr)</div>
+      <div class="opt-chip" onclick="selChip(this,'exp','Established (5+ yr)')"><div class="opt-letter">C</div>Established (5+ yr)</div>
+    </div>
+  </div>
+  <div class="nav-row"><div></div><button class="btn-primary" onclick="goTo(1)">Start Vision Work →</button></div>
+</div>
+
+<!-- ── SEC 1: VALUES ── -->
+<div class="section" id="sec1">
+  <div class="sec-title">Discover your core values</div>
+  <div class="sec-sub">Select every value that resonates with who you are and how you want to operate your business. Then rank your top 5.</div>
+  <div class="val-hint" id="valHint">Select all that resonate — aim for 8 or more to start.</div>
+  <div class="val-grid" id="valGrid"></div>
+  <div id="rankSec" style="display:none">
+    <div style="font-size:14px;font-weight:500;color:var(--gray-900);margin-bottom:4px">Rank your top 5</div>
+    <div style="font-size:12px;color:var(--gray-500);margin-bottom:10px">Click values below in order — most important first.</div>
+    <div id="rankedList"></div>
+    <div class="rank-pool" id="rankPool"></div>
+  </div>
+  <div class="card" style="margin-top:1.25rem">
+    <div class="card-label">Why these values matter in your business</div>
+    <textarea id="valWhy" placeholder="What does living these values look like day-to-day as an agent?"></textarea>
+  </div>
+  <div class="nav-row">
+    <button class="btn-secondary" onclick="goTo(0)">← Back</button>
+    <button class="btn-primary" onclick="goTo(2)">Next: Agent Type →</button>
+  </div>
+</div>
+
+<!-- ── SEC 2: AGENT TYPE ── -->
+<div class="section" id="sec2">
+  <div class="sec-title">What kind of agent are you?</div>
+  <div class="sec-sub">Answer honestly — there are no right or wrong answers. 25 questions, shown 5 at a time. Your results reveal your natural strengths and the business model built for you.</div>
+  <div id="quizWrap"></div>
+  <div id="quizResult" style="display:none">
+    <div class="result-card" id="resultCard">
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-desc" id="resultDesc"></div>
+      <div class="result-tags" id="resultTags"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">How does this land for you?</div>
+      <textarea id="agentReflect" placeholder="Does this feel accurate? What surprised you? What would you add?"></textarea>
+    </div>
+    <div class="nav-row">
+      <button class="btn-secondary" onclick="goTo(1)">← Back</button>
+      <button class="btn-primary" onclick="goTo(3)">Next: Set Your Goals →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── SEC 3: GOALS ── -->
+<div class="section" id="sec3">
+  <div class="sec-title">Set your meaningful goals</div>
+  <div class="sec-sub">Goals anchored to your values stick. Set targets across the areas that matter most to your business and life.</div>
+  <div class="goal-sec">
+    <div class="goal-head"><div class="goal-dot" style="background:var(--blue-600)"></div>Production &amp; income</div>
+    <div id="gProd">
+      <div class="goal-row"><span class="goal-badge" style="background:var(--blue-50);color:var(--blue-800)">$</span><input type="text" placeholder="e.g. Close 24 transactions this year"/></div>
+      <div class="goal-row"><span class="goal-badge" style="background:var(--blue-50);color:var(--blue-800)">$</span><input type="text" placeholder="e.g. Achieve $200k GCI"/></div>
+    </div>
+    <button class="add-btn" onclick="addGoal('gProd','var(--blue-50)','var(--blue-800)','$')">+ Add goal</button>
+  </div>
+  <div class="goal-sec">
+    <div class="goal-head"><div class="goal-dot" style="background:var(--teal-600)"></div>Database &amp; relationships</div>
+    <div id="gDB">
+      <div class="goal-row"><span class="goal-badge" style="background:var(--teal-50);color:var(--teal-800)">DB</span><input type="text" placeholder="e.g. Grow sphere to 300 contacts"/></div>
+    </div>
+    <button class="add-btn" onclick="addGoal('gDB','var(--teal-50)','var(--teal-800)','DB')">+ Add goal</button>
+  </div>
+  <div class="goal-sec">
+    <div class="goal-head"><div class="goal-dot" style="background:var(--purple-600)"></div>Personal growth &amp; skills</div>
+    <div id="gGrow">
+      <div class="goal-row"><span class="goal-badge" style="background:var(--purple-50);color:var(--purple-800)">PG</span><input type="text" placeholder="e.g. Complete negotiation certification"/></div>
+    </div>
+    <button class="add-btn" onclick="addGoal('gGrow','var(--purple-50)','var(--purple-800)','PG')">+ Add goal</button>
+  </div>
+  <div class="goal-sec">
+    <div class="goal-head"><div class="goal-dot" style="background:var(--coral-600)"></div>Life &amp; balance</div>
+    <div id="gLife">
+      <div class="goal-row"><span class="goal-badge" style="background:var(--coral-50);color:var(--coral-800)">LF</span><input type="text" placeholder="e.g. Take 3 full weeks vacation"/></div>
+    </div>
+    <button class="add-btn" onclick="addGoal('gLife','var(--coral-50)','var(--coral-800)','LF')">+ Add goal</button>
+  </div>
+  <div class="nav-row">
+    <button class="btn-secondary" onclick="goTo(2)">← Back</button>
+    <button class="btn-primary" onclick="goTo(4)">Next: Your Plan →</button>
+  </div>
+</div>
+
+<!-- ── SEC 4: PLAN ── -->
+<div class="section" id="sec4">
+  <div class="sec-title">Your 30 · 90 · 1 year plan</div>
+  <div class="sec-sub">Break your vision into time-bound milestones. Be specific — what will you do, build, or become in each window?</div>
+  <div class="tl-grid">
+    <div class="tl-card">
+      <div class="tl-head"><div class="tl-badge t30">30</div><div><div class="tl-label">30 Days</div><div class="tl-sub">Quick wins &amp; focus</div></div></div>
+      <label>Priority 1</label><textarea id="p30a" placeholder="What's your #1 focus right now?"></textarea>
+      <label>Priority 2</label><textarea id="p30b" placeholder="Second priority..."></textarea>
+      <label>Priority 3</label><textarea id="p30c" placeholder="Third priority..."></textarea>
+      <label>What does success look like?</label><textarea id="p30w" placeholder="How will you know the 30 days was a win?"></textarea>
+    </div>
+    <div class="tl-card">
+      <div class="tl-head"><div class="tl-badge t90">90</div><div><div class="tl-label">90 Days</div><div class="tl-sub">Momentum &amp; systems</div></div></div>
+      <label>Priority 1</label><textarea id="p90a" placeholder="What's your #1 focus by month 3?"></textarea>
+      <label>Priority 2</label><textarea id="p90b" placeholder="Second priority..."></textarea>
+      <label>Priority 3</label><textarea id="p90c" placeholder="Third priority..."></textarea>
+      <label>What does success look like?</label><textarea id="p90w" placeholder="How will you know the 90 days was a win?"></textarea>
+    </div>
+    <div class="tl-card">
+      <div class="tl-head"><div class="tl-badge t1y">1Y</div><div><div class="tl-label">1 Year</div><div class="tl-sub">The bigger picture</div></div></div>
+      <label>Priority 1</label><textarea id="p1ya" placeholder="What's your biggest 1-year goal?"></textarea>
+      <label>Priority 2</label><textarea id="p1yb" placeholder="Second priority..."></textarea>
+      <label>Priority 3</label><textarea id="p1yc" placeholder="Third priority..."></textarea>
+      <label>What does success look like?</label><textarea id="p1yw" placeholder="How will you know the year was a win?"></textarea>
+    </div>
+  </div>
+  <div class="card" style="margin-top:1.5rem">
+    <div class="card-label">Your "why" — what's driving all of this?</div>
+    <textarea id="bigWhy" placeholder="What is the deeper reason you're building this business? Who are you doing it for?" style="min-height:96px"></textarea>
+  </div>
+  <div class="nav-row">
+    <button class="btn-secondary" onclick="goTo(3)">← Back</button>
+    <button class="btn-primary" onclick="buildAndPreview()">Preview &amp; Submit →</button>
+  </div>
+</div>
+
+<!-- ── SEC 5: SUBMIT ── -->
+<div class="section" id="sec5">
+  <div class="sec-title">Your vision summary</div>
+  <div class="sec-sub">Review everything below, then submit. Your coach gets the full structured summary. You'll receive a warm personal recap in your inbox to revisit whenever you need it.</div>
+  <div id="summaryOut"></div>
+  <div class="email-form">
+    <div class="email-title">Ready to send?</div>
+    <div class="email-sub">Confirm your details below — two emails will go out simultaneously.</div>
+    <label>Your name</label>
+    <input type="text" id="subName" placeholder="Full name"/>
+    <label>Your email</label>
+    <input type="email" id="subEmail" placeholder="your@email.com"/>
+    <label>Any final notes for your coach? (optional)</label>
+    <textarea id="subNotes" placeholder="Anything you want your coach to know going into your first session?" style="min-height:72px"></textarea>
+    <div style="margin-top:1.25rem">
+      <button class="btn-primary" id="subBtn" onclick="submitAll()">Send to Coach &amp; Get My Copy →</button>
+    </div>
+    <div class="email-status" id="emailStatus"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-secondary" onclick="goTo(4)">← Back</button>
+    <div></div>
+  </div>
+</div>
+
+</div><!-- /shell -->
+
+<script>
+// ── CONFIG — replace before publishing ──────────────────
+var EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
+var EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
+var COACH_TEMPLATE_ID   = 'YOUR_COACH_TEMPLATE_ID';
+var STUDENT_TEMPLATE_ID = 'YOUR_STUDENT_TEMPLATE_ID';
+var COACH_EMAIL         = 'coach@youremail.com';
+
+// ── DATA ────────────────────────────────────────────────
+var ALL_VALUES = [
+  'Integrity','Accountability','Authenticity','Excellence','Consistency',
+  'Family','Faith','Freedom','Service','Leadership',
+  'Growth','Abundance','Community','Trust','Discipline',
+  'Creativity','Ambition','Empathy','Balance','Courage',
+  'Innovation','Loyalty','Generosity','Health','Impact','Resilience'
+];
+
+var QUESTIONS = [
+  {q:'When you imagine your ideal week, what does it look like?',opts:[
+    {t:'Packed with client meetings, calls, and networking events',tp:'connector'},
+    {t:'A mix of strategy, systems work, and a few key appointments',tp:'strategist'},
+    {t:'Deep-diving into market data, listings analysis, and research',tp:'analyst'},
+    {t:'Building my team, delegating, and working on the business',tp:'leader'}
+  ]},
+  {q:'Where do most of your leads come from (or where do you want them to)?',opts:[
+    {t:'Word of mouth — people just call me',tp:'connector'},
+    {t:'A mix of social media, content, and follow-up systems',tp:'strategist'},
+    {t:'Cold outreach, FSBO, expireds, or targeted farming',tp:'analyst'},
+    {t:'My team or referral partners bring them to me',tp:'leader'}
+  ]},
+  {q:'What energizes you most about real estate?',opts:[
+    {t:'The relationships and helping people through big moments',tp:'connector'},
+    {t:'Building a brand, creating systems, and scaling',tp:'strategist'},
+    {t:'Winning in a competitive market with superior knowledge',tp:'analyst'},
+    {t:'Building a team and creating opportunities for others',tp:'leader'}
+  ]},
+  {q:'When a deal gets complicated, you tend to…',opts:[
+    {t:'Lean on your relationships and communication to work it out',tp:'connector'},
+    {t:'Pull out your process — you have a system for this',tp:'strategist'},
+    {t:'Research, analyze, and come with facts and solutions',tp:'analyst'},
+    {t:'Delegate to the right person on your team',tp:'leader'}
+  ]},
+  {q:'Your dream business 5 years from now looks like…',opts:[
+    {t:'A thriving referral-based solo practice built on trust',tp:'connector'},
+    {t:'A highly optimized personal brand with predictable income',tp:'strategist'},
+    {t:'The most knowledgeable agent in my niche or market',tp:'analyst'},
+    {t:'A top-producing team or brokerage I\'ve built',tp:'leader'}
+  ]},
+  {q:'A past client calls to say they are ready to buy again. Your first instinct is…',opts:[
+    {t:'Pick up immediately — catching up with them genuinely excites you',tp:'connector'},
+    {t:'Pull up their CRM record and check where they are in your follow-up sequence',tp:'strategist'},
+    {t:'Start refreshing yourself on current inventory before you call back',tp:'analyst'},
+    {t:'Hand it to a buyer agent on your team and oversee the process',tp:'leader'}
+  ]},
+  {q:'What does a successful open house look like to you?',opts:[
+    {t:'Deep conversations with every visitor — you leave knowing their story',tp:'connector'},
+    {t:'Capturing leads into your CRM and launching a follow-up campaign',tp:'strategist'},
+    {t:'Fielding detailed questions about the market and demonstrating your expertise',tp:'analyst'},
+    {t:'One of your agents runs it while you focus on higher-level strategy',tp:'leader'}
+  ]},
+  {q:'When you sit down to plan your week, what do you prioritize first?',opts:[
+    {t:'Who do I need to connect with, check in on, or celebrate this week?',tp:'connector'},
+    {t:'Are my lead gen systems running and is my pipeline full?',tp:'strategist'},
+    {t:'What market knowledge or skills do I need to sharpen this week?',tp:'analyst'},
+    {t:'What decisions need my attention and what can I delegate to my team?',tp:'leader'}
+  ]},
+  {q:'A new agent asks you for advice. What do you naturally tell them?',opts:[
+    {t:'Build genuine relationships — people do business with those they trust',tp:'connector'},
+    {t:'Set up your systems early; consistency and leverage are everything',tp:'strategist'},
+    {t:'Become the most knowledgeable person in your market — expertise wins',tp:'analyst'},
+    {t:'Think big from day one; build a team and stop trading time for money',tp:'leader'}
+  ]},
+  {q:'How do you feel about social media and content creation?',opts:[
+    {t:'I prefer one-on-one connection over broadcasting to an audience',tp:'connector'},
+    {t:'I love it — it is one of the best ways to build a scalable presence',tp:'strategist'},
+    {t:'I use it to share market data, insights, and educational content',tp:'analyst'},
+    {t:'I focus on thought leadership and building my brand as a business owner',tp:'leader'}
+  ]},
+  {q:'When you close a deal, what feels most rewarding?',opts:[
+    {t:'The hug at the closing table and knowing you changed someone\'s life',tp:'connector'},
+    {t:'Seeing your process work exactly the way you designed it',tp:'strategist'},
+    {t:'Knowing your market knowledge got the client a better outcome than anyone else could have',tp:'analyst'},
+    {t:'Watching your team execute and knowing the machine is working',tp:'leader'}
+  ]},
+  {q:'How do you typically handle your database and past clients?',opts:[
+    {t:'Personal calls, handwritten notes, and pop-bys — I stay genuinely connected',tp:'connector'},
+    {t:'Automated email campaigns and CRM sequences with personal touches layered in',tp:'strategist'},
+    {t:'Market updates and educational content that keep me top of mind as an expert',tp:'analyst'},
+    {t:'My team manages client relationships on my behalf with my systems in place',tp:'leader'}
+  ]},
+  {q:'What is your relationship with data and market statistics?',opts:[
+    {t:'I know enough to have conversations, but data is not my main focus',tp:'connector'},
+    {t:'I use data to measure my business performance and optimize my systems',tp:'strategist'},
+    {t:'I live in the data — I study it, share it, and use it to win every negotiation',tp:'analyst'},
+    {t:'I rely on my team and tools to track data so I can focus on leading',tp:'leader'}
+  ]},
+  {q:'A client is frustrated and emotional during a difficult negotiation. You…',opts:[
+    {t:'Slow down, listen deeply, and make sure they feel supported before anything else',tp:'connector'},
+    {t:'Walk them through your pre-built process for handling exactly this situation',tp:'strategist'},
+    {t:'Present the data and facts calmly to reframe the situation logically',tp:'analyst'},
+    {t:'Step in strategically and direct your team on how to handle the situation',tp:'leader'}
+  ]},
+  {q:'How do you think about hiring or working with other agents?',opts:[
+    {t:'I prefer working solo — my relationships are personal and I like keeping it that way',tp:'connector'},
+    {t:'I am open to it if it helps scale my lead generation and brand',tp:'strategist'},
+    {t:'I might bring in support for tasks outside my zone of expertise',tp:'analyst'},
+    {t:'Building a team is central to my vision — I want to multiply my impact',tp:'leader'}
+  ]},
+  {q:'What does your ideal marketing look like?',opts:[
+    {t:'Personal video messages, handwritten cards, and word-of-mouth referrals',tp:'connector'},
+    {t:'A consistent content calendar, retargeting ads, and a strong email list',tp:'strategist'},
+    {t:'Market reports, neighborhood guides, and positioning as the area expert',tp:'analyst'},
+    {t:'High-level brand awareness and thought leadership that attracts agents and clients alike',tp:'leader'}
+  ]},
+  {q:'When you think about your income, what model appeals most to you?',opts:[
+    {t:'Steady referral-based income from a loyal client base I have nurtured for years',tp:'connector'},
+    {t:'Predictable income from a diversified, always-on lead generation engine',tp:'strategist'},
+    {t:'Premium fees commanded by my expertise and reputation in a specific niche',tp:'analyst'},
+    {t:'Leveraged income from a team where I earn on every transaction they close',tp:'leader'}
+  ]},
+  {q:'What is your biggest frustration with the real estate industry?',opts:[
+    {t:'Agents who treat clients like transactions instead of people',tp:'connector'},
+    {t:'Agents who work reactively instead of building sustainable businesses',tp:'strategist'},
+    {t:'Agents who do not invest in their knowledge and give the industry a bad name',tp:'analyst'},
+    {t:'The lack of real business thinking and leadership in most agencies',tp:'leader'}
+  ]},
+  {q:'When you are at your best, clients would describe you as…',opts:[
+    {t:'Warm, trustworthy, and someone they genuinely feel cares about them',tp:'connector'},
+    {t:'Professional, consistent, and always on top of things',tp:'strategist'},
+    {t:'Sharp, prepared, and the most knowledgeable person they have worked with',tp:'analyst'},
+    {t:'Visionary, decisive, and someone who commands a room',tp:'leader'}
+  ]},
+  {q:'How do you feel about scripts and structured sales conversations?',opts:[
+    {t:'I prefer natural conversation — scripted language feels fake to me',tp:'connector'},
+    {t:'I love having a proven framework that I can refine and optimize over time',tp:'strategist'},
+    {t:'I rely on market knowledge and facts more than scripts',tp:'analyst'},
+    {t:'I build the scripts and train my team to use them consistently',tp:'leader'}
+  ]},
+  {q:'What does growth mean to you in your real estate career?',opts:[
+    {t:'Deepening relationships and becoming the most trusted agent in my community',tp:'connector'},
+    {t:'Building systems that allow me to do more with less effort over time',tp:'strategist'},
+    {t:'Becoming the recognized authority in my market or niche',tp:'analyst'},
+    {t:'Expanding my team, my footprint, and my influence in the industry',tp:'leader'}
+  ]},
+  {q:'What is the hardest part of the business for you to stay consistent with?',opts:[
+    {t:'Prospecting to people I do not already have a warm connection with',tp:'connector'},
+    {t:'Staying patient while my systems and content take time to compound',tp:'strategist'},
+    {t:'Simplifying my communication so clients who are not data-focused stay engaged',tp:'analyst'},
+    {t:'Staying involved in the day-to-day enough to keep culture and standards high',tp:'leader'}
+  ]},
+  {q:'When you picture your legacy in real estate, what do you want people to say?',opts:[
+    {t:'They genuinely cared about every single person they worked with',tp:'connector'},
+    {t:'They built one of the most efficient and innovative real estate businesses around',tp:'strategist'},
+    {t:'Nobody knew this market better or fought harder for their clients',tp:'analyst'},
+    {t:'They built something that outlasted them and created opportunity for so many people',tp:'leader'}
+  ]},
+  {q:'How do you recharge after a tough stretch in the business?',opts:[
+    {t:'Spending time with family, friends, or clients I genuinely enjoy',tp:'connector'},
+    {t:'Auditing my systems and making improvements so next time runs smoother',tp:'strategist'},
+    {t:'Reading, researching, and sharpening my knowledge and skills',tp:'analyst'},
+    {t:'Zooming out, revisiting my vision, and realigning my team around the big picture',tp:'leader'}
+  ]},
+  {q:'When you feel most alive in your work, it is because…',opts:[
+    {t:'You just made a real difference in someone\'s life and they know it',tp:'connector'},
+    {t:'Everything in your business is running exactly the way you designed it',tp:'strategist'},
+    {t:'You just out-negotiated or out-knowledged everyone else in the room',tp:'analyst'},
+    {t:'Your team is executing at a high level and the vision is coming to life',tp:'leader'}
+  ]}
+];
+
+var AGENT_TYPES = {
+  connector:{
+    title:'The Relationship Agent',
+    desc:'You thrive on deep connections and genuine service. Your business is built on trust — clients refer you because of how you make them feel, not just what you know. Your superpower is loyalty. Best path: sphere-based referral model, community involvement, and personalized touches that no one else does.',
+    warmDesc:'Your natural superpower is the way you make people feel seen, heard, and cared for. In a world where real estate can feel transactional, you are the agent who turns clients into lifelong advocates. Lean into that — it is your biggest competitive advantage.',
+    tags:['Sphere of Influence','Referral Model','High Touch','Long-Term Trust'],
+    bg:'#E6F1FB',border:'#B5D4F4',titleColor:'#0C447C',tagBg:'#B5D4F4',tagColor:'#0C447C'
+  },
+  strategist:{
+    title:'The Brand Strategist',
+    desc:'You are a builder at heart. Systems, content, and scalable processes excite you. You want a business that works even when you are not grinding. Your superpower is leverage. Best path: content marketing, social media presence, CRM mastery, and a repeatable lead-generation engine.',
+    warmDesc:'You think in systems, and that is a rare and powerful gift in this industry. While other agents are reactive, you are building something that compounds over time. Every piece of content you create, every process you refine — it is all equity in your business.',
+    tags:['Content Marketing','Systems & CRM','Personal Brand','Scalable Lead Gen'],
+    bg:'#EEEDFE',border:'#AFA9EC',titleColor:'#3C3489',tagBg:'#AFA9EC',tagColor:'#3C3489'
+  },
+  analyst:{
+    title:'The Market Expert',
+    desc:'Data, strategy, and expertise are your currency. You win deals by being the most prepared person in the room. Clients trust you because you know what others do not. Your superpower is credibility. Best path: niche specialization (luxury, investment, new construction), thought leadership, and value-based positioning.',
+    warmDesc:'Knowledge is your most powerful tool, and you wield it with intention. When clients work with you, they feel the difference — they are not just hiring an agent, they are hiring an expert who will protect them and advocate for them with real intelligence.',
+    tags:['Niche Specialist','Data-Driven','Thought Leader','Expert Positioning'],
+    bg:'#E1F5EE',border:'#9FE1CB',titleColor:'#085041',tagBg:'#9FE1CB',tagColor:'#085041'
+  },
+  leader:{
+    title:'The Team Builder',
+    desc:'You see the bigger picture. You are not just building a business — you are building a movement. You want to create opportunities for others and scale your impact beyond what any one agent can do. Your superpower is vision. Best path: team lead model, hiring and coaching, working on the business instead of just in it.',
+    warmDesc:'You are not just building a career — you are building something that outlasts any single transaction. Your ability to see possibility in others and inspire them to rise is a gift that will multiply your impact far beyond what you could do alone. Lead with that vision.',
+    tags:['Team Building','Leverage','Coaching & Culture','Expansion Model'],
+    bg:'#FAECE7',border:'#F5C4B3',titleColor:'#712B13',tagBg:'#F5C4B3',tagColor:'#712B13'
+  }
+};
+
+// ── STATE ────────────────────────────────────────────────
+var currentStep  = 0;
+var selectedVals = [];
+var rankedVals   = [];
+var quizAnswers  = [];
+var quizResult   = '';
+var agentFocus   = '';
+var agentExp     = '';
+var quizPage     = 0;
+var PAGE_SIZE    = 5;
+
+// ── NAVIGATION ───────────────────────────────────────────
+function goTo(n) {
+  document.getElementById('sec' + currentStep).classList.remove('visible');
+  currentStep = n;
+  document.getElementById('sec' + n).classList.add('visible');
+  document.querySelectorAll('.prog-step').forEach(function(s, i) {
+    s.classList.remove('active','done');
+    if (i === n) s.classList.add('active');
+    else if (i < n) s.classList.add('done');
+  });
+  document.getElementById('progFill').style.width = (n / 5 * 100) + '%';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// ── INTRO CHIPS ──────────────────────────────────────────
+function selChip(el, group, val) {
+  var siblings = el.closest('.chip-grid').querySelectorAll('.opt-chip');
+  siblings.forEach(function(c) { c.classList.remove('selected'); });
+  el.classList.add('selected');
+  if (group === 'focus') agentFocus = val;
+  if (group === 'exp')   agentExp   = val;
+}
+
+// ── VALUES ───────────────────────────────────────────────
+function initValues() {
+  var grid = document.getElementById('valGrid');
+  grid.innerHTML = ALL_VALUES.map(function(v) {
+    return '<div class="val-chip" onclick="toggleVal(this,\'' + v + '\')">' + v + '</div>';
+  }).join('');
+}
+
+function toggleVal(el, val) {
+  if (el.classList.contains('selected')) {
+    el.classList.remove('selected');
+    selectedVals = selectedVals.filter(function(v) { return v !== val; });
+  } else {
+    el.classList.add('selected');
+    selectedVals.push(val);
+  }
+  var n = selectedVals.length;
+  var hint = document.getElementById('valHint');
+  hint.textContent = n < 5
+    ? 'Select at least 5 values (' + n + ' selected)'
+    : n + ' selected — now click your top 5 below in order of importance';
+  if (n >= 5) showRanking();
+  else { document.getElementById('rankSec').style.display = 'none'; rankedVals = []; }
+}
+
+function showRanking() {
+  document.getElementById('rankSec').style.display = 'block';
+  rankedVals = [];
+  document.getElementById('rankedList').innerHTML = '<div style="font-size:12px;color:var(--gray-500);padding:6px 0">Click values below to rank them (most important first)...</div>';
+  document.getElementById('rankPool').innerHTML = selectedVals.map(function(v) {
+    return '<div class="rank-chip" onclick="rankVal(this,\'' + v + '\')">' + v + '</div>';
+  }).join('');
+}
+
+function rankVal(el, val) {
+  if (rankedVals.length >= 5) return;
+  rankedVals.push(val);
+  el.remove();
+  var list = document.getElementById('rankedList');
+  if (rankedVals.length === 1) list.innerHTML = '';
+  var item = document.createElement('div');
+  item.className = 'rank-item';
+  item.innerHTML = '<div class="rank-num">' + rankedVals.length + '</div><div style="font-size:13px">' + val + '</div>';
+  list.appendChild(item);
+}
+
+// ── QUIZ ─────────────────────────────────────────────────
+function initQuiz() {
+  quizPage = 0;
+  quizAnswers = [];
+  renderQuizPage();
+}
+
+function renderQuizPage() {
+  var start      = quizPage * PAGE_SIZE;
+  var end        = Math.min(start + PAGE_SIZE, QUESTIONS.length);
+  var totalPages = Math.ceil(QUESTIONS.length / PAGE_SIZE);
+  var isLast     = end >= QUESTIONS.length;
+
+  // dot nav
+  var dots = '';
+  for (var d = 0; d < totalPages; d++) {
+    var bg = d < quizPage ? 'background:var(--teal-400);border-color:var(--teal-400)'
+           : d === quizPage ? 'background:var(--blue-600);border-color:var(--blue-600)'
+           : '';
+    dots += '<div style="width:8px;height:8px;border-radius:50%;border:1.5px solid var(--gray-300);' + bg + '"></div>';
+  }
+
+  var html = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">'
+           + '<div style="font-size:12px;font-weight:500;color:var(--gray-500)">Questions ' + (start+1) + '–' + end + ' of ' + QUESTIONS.length + '</div>'
+           + '<div style="display:flex;gap:5px;align-items:center">' + dots + '</div>'
+           + '</div>';
+
+  for (var qi = start; qi < end; qi++) {
+    var q = QUESTIONS[qi];
+    html += '<div class="quiz-card">'
+          + '<div style="font-size:11px;font-weight:500;color:var(--gray-500);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">Question ' + (qi+1) + '</div>'
+          + '<div class="quiz-q">' + q.q + '</div>'
+          + '<div class="quiz-opts">';
+    for (var oi = 0; oi < q.opts.length; oi++) {
+      var o   = q.opts[oi];
+      var sel = quizAnswers[qi] === o.tp ? ' selected' : '';
+      html += '<div class="quiz-opt' + sel + '" onclick="pickOpt(this,' + qi + ',\'' + o.tp + '\')">'
+            + '<div class="opt-letter">' + String.fromCharCode(65 + oi) + '</div>'
+            + '<div class="quiz-opt-text">' + o.t + '</div>'
+            + '</div>';
+    }
+    html += '</div></div>';
+  }
+
+  html += '<div class="quiz-pg-nav">';
+  html += quizPage > 0
+        ? '<button class="btn-secondary" onclick="quizBack()">← Back</button>'
+        : '<div></div>';
+  html += isLast
+        ? '<button class="btn-primary" onclick="calcResult()">See My Agent Type →</button>'
+        : '<button class="btn-primary" onclick="quizNext()">Next questions →</button>';
+  html += '</div>';
+
+  document.getElementById('quizWrap').innerHTML = html;
+}
+
+function pickOpt(el, qi, tp) {
+  var opts = el.closest('.quiz-opts').querySelectorAll('.quiz-opt');
+  opts.forEach(function(o) { o.classList.remove('selected'); });
+  el.classList.add('selected');
+  quizAnswers[qi] = tp;
+}
+
+function quizNext() {
+  var start     = quizPage * PAGE_SIZE;
+  var end       = Math.min(start + PAGE_SIZE, QUESTIONS.length);
+  var missing   = [];
+  for (var i = start; i < end; i++) {
+    if (!quizAnswers[i]) missing.push(i + 1);
+  }
+  if (missing.length) {
+    alert('Please answer all questions on this page before continuing.\nMissing: Question' + (missing.length > 1 ? 's ' : ' ') + missing.join(', '));
+    return;
+  }
+  quizPage++;
+  renderQuizPage();
+  document.getElementById('sec2').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function quizBack() {
+  quizPage--;
+  renderQuizPage();
+  document.getElementById('sec2').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function calcResult() {
+  var missing = [];
+  for (var i = 0; i < QUESTIONS.length; i++) {
+    if (!quizAnswers[i]) missing.push(i + 1);
+  }
+  if (missing.length) {
+    alert('Please answer all 25 questions. Missing: ' + missing.join(', '));
+    return;
+  }
+  var counts = {connector:0, strategist:0, analyst:0, leader:0};
+  quizAnswers.forEach(function(tp) { counts[tp]++; });
+  quizResult = Object.keys(counts).reduce(function(a, b) { return counts[a] >= counts[b] ? a : b; });
+  var r    = AGENT_TYPES[quizResult];
+  var card = document.getElementById('resultCard');
+  card.style.background   = r.bg;
+  card.style.borderColor  = r.border;
+  document.getElementById('resultTitle').style.color   = r.titleColor;
+  document.getElementById('resultTitle').textContent   = r.title;
+  document.getElementById('resultDesc').textContent    = r.desc;
+  document.getElementById('resultTags').innerHTML      = r.tags.map(function(t) {
+    return '<span class="rtag" style="background:' + r.tagBg + ';color:' + r.tagColor + '">' + t + '</span>';
+  }).join('');
+  document.getElementById('quizWrap').style.display   = 'none';
+  document.getElementById('quizResult').style.display = 'block';
+}
+
+// ── GOALS ────────────────────────────────────────────────
+function addGoal(id, bg, color, badge) {
+  var c   = document.getElementById(id);
+  var row = document.createElement('div');
+  row.className = 'goal-row';
+  row.innerHTML = '<span class="goal-badge" style="background:' + bg + ';color:' + color + '">' + badge + '</span><input type="text" placeholder="Add another goal..."/>';
+  c.appendChild(row);
+  row.querySelector('input').focus();
+}
+
+function getGoals(id) {
+  var inputs = document.getElementById(id).querySelectorAll('input');
+  var vals   = [];
+  inputs.forEach(function(inp) { if (inp.value.trim()) vals.push(inp.value.trim()); });
+  return vals;
+}
+
+// ── HELPERS ──────────────────────────────────────────────
+function fv(id) {
+  var el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+function blk(colorKey, label, content) {
+  var styles = {
+    blue:   'background:#E6F1FB;border-color:#B5D4F4',
+    purple: 'background:#EEEDFE;border-color:#AFA9EC',
+    teal:   'background:#E1F5EE;border-color:#9FE1CB',
+    gray:   ''
+  };
+  return '<div class="sum-block" style="' + (styles[colorKey] || '') + '">'
+       + '<div class="sum-label">' + label + '</div>'
+       + '<div class="sum-val">' + content + '</div>'
+       + '</div>';
+}
+
+// ── BUILD SUMMARY ────────────────────────────────────────
+function buildAndPreview() {
+  var name    = fv('agentName') || 'Agent';
+  var topVals = rankedVals.length ? rankedVals.slice(0,5) : selectedVals.slice(0,5);
+  var at      = quizResult ? AGENT_TYPES[quizResult] : null;
+
+  var prodG  = getGoals('gProd');
+  var dbG    = getGoals('gDB');
+  var growG  = getGoals('gGrow');
+  var lifeG  = getGoals('gLife');
+  var p30    = [fv('p30a'), fv('p30b'), fv('p30c')].filter(Boolean);
+  var p90    = [fv('p90a'), fv('p90b'), fv('p90c')].filter(Boolean);
+  var p1y    = [fv('p1ya'), fv('p1yb'), fv('p1yc')].filter(Boolean);
+
+  var html = '';
+
+  html += blk('blue', 'Agent',
+    '<div style="font-size:18px;font-weight:500;color:#0C447C">' + name + '</div>' +
+    (agentFocus || agentExp ? '<div style="font-size:13px;color:#378ADD;margin-top:3px">' + [agentFocus, agentExp].filter(Boolean).join(' · ') + '</div>' : '')
+  );
+
+  if (topVals.length) {
+    html += blk('gray', 'Core values',
+      topVals.map(function(v, i) {
+        return '<span class="pill" style="background:#E6F1FB;color:#0C447C">' + (i+1) + '. ' + v + '</span>';
+      }).join('') +
+      (fv('valWhy') ? '<div style="font-size:13px;color:var(--gray-700);margin-top:12px;line-height:1.7">' + fv('valWhy') + '</div>' : '')
+    );
+  }
+
+  if (at) {
+    html += blk('gray', 'Agent type',
+      '<div style="font-size:15px;font-weight:500;color:' + at.titleColor + '">' + at.title + '</div>' +
+      (fv('agentReflect') ? '<div style="font-size:13px;color:var(--gray-700);margin-top:8px;line-height:1.7">' + fv('agentReflect') + '</div>' : '')
+    );
+  }
+
+  var allGoals = [].concat(
+    prodG.map(function(g) { return {g:g, cat:'Income',   bg:'#E6F1FB', c:'#0C447C'}; }),
+    dbG.map(function(g)   { return {g:g, cat:'Database', bg:'#E1F5EE', c:'#085041'}; }),
+    growG.map(function(g) { return {g:g, cat:'Growth',   bg:'#EEEDFE', c:'#3C3489'}; }),
+    lifeG.map(function(g) { return {g:g, cat:'Life',     bg:'#FAECE7', c:'#712B13'}; })
+  );
+  if (allGoals.length) {
+    html += blk('gray', 'Goals',
+      allGoals.map(function(item) {
+        return '<div style="display:flex;align-items:center;gap:8px;margin-top:8px">'
+             + '<span class="pill" style="background:' + item.bg + ';color:' + item.c + '">' + item.cat + '</span>'
+             + '<span style="font-size:13px">' + item.g + '</span>'
+             + '</div>';
+      }).join('')
+    );
+  }
+
+  html += '<div class="sum-2">';
+  if (p30.length) html += blk('blue', '30-day priorities',
+    p30.map(function(p) { return '<div style="font-size:13px;margin-top:7px;padding-left:10px;border-left:2px solid #378ADD;border-radius:0">' + p + '</div>'; }).join('') +
+    (fv('p30w') ? '<div style="font-size:12px;color:var(--gray-500);margin-top:8px">' + fv('p30w') + '</div>' : '')
+  );
+  if (p90.length) html += blk('purple', '90-day priorities',
+    p90.map(function(p) { return '<div style="font-size:13px;margin-top:7px;padding-left:10px;border-left:2px solid #7F77DD;border-radius:0">' + p + '</div>'; }).join('') +
+    (fv('p90w') ? '<div style="font-size:12px;color:var(--gray-500);margin-top:8px">' + fv('p90w') + '</div>' : '')
+  );
+  html += '</div>';
+
+  if (p1y.length) html += blk('teal', '1-year vision',
+    p1y.map(function(p) { return '<div style="font-size:13px;margin-top:7px;padding-left:10px;border-left:2px solid #1D9E75;border-radius:0">' + p + '</div>'; }).join('') +
+    (fv('p1yw') ? '<div style="font-size:12px;color:var(--gray-500);margin-top:8px">' + fv('p1yw') + '</div>' : '')
+  );
+
+  if (fv('bigWhy')) {
+    html += '<div class="sum-block" style="background:#E1F5EE;border-color:#9FE1CB">'
+          + '<div class="sum-label" style="color:#0F6E56">Your why</div>'
+          + '<div style="font-size:14px;color:#085041;line-height:1.8;font-style:italic">"' + fv('bigWhy') + '"</div>'
+          + '</div>';
+  }
+
+  document.getElementById('summaryOut').innerHTML = html;
+  document.getElementById('subName').value  = fv('agentName');
+  document.getElementById('subEmail').value = fv('agentEmail');
+  goTo(5);
+}
+
+// ── SUBMIT ───────────────────────────────────────────────
+function submitAll() {
+  var name  = document.getElementById('subName').value.trim();
+  var email = document.getElementById('subEmail').value.trim();
+  var notes = document.getElementById('subNotes').value.trim();
+
+  if (!name || !email) { alert('Please confirm your name and email before submitting.'); return; }
+
+  var btn    = document.getElementById('subBtn');
+  var status = document.getElementById('emailStatus');
+  btn.disabled    = true;
+  btn.textContent = 'Sending…';
+  status.className = 'email-status';
+
+  var firstName = name.split(' ')[0];
+  var topVals   = rankedVals.length ? rankedVals.slice(0,5) : selectedVals.slice(0,5);
+  var at        = quizResult ? AGENT_TYPES[quizResult] : null;
+  var prodG     = getGoals('gProd');
+  var dbG       = getGoals('gDB');
+  var growG     = getGoals('gGrow');
+  var lifeG     = getGoals('gLife');
+  var p30       = [fv('p30a'), fv('p30b'), fv('p30c')].filter(Boolean);
+  var p90       = [fv('p90a'), fv('p90b'), fv('p90c')].filter(Boolean);
+  var p1y       = [fv('p1ya'), fv('p1yb'), fv('p1yc')].filter(Boolean);
+
+  var summaryText = [
+    'STUDENT: ' + name + ' (' + email + ')',
+    'FOCUS: ' + (agentFocus || '—') + '  |  EXPERIENCE: ' + (agentExp || '—'),
+    '',
+    'AGENT TYPE: ' + (at ? at.title : '—'),
+    '',
+    'CORE VALUES (ranked): ' + (topVals.join(', ') || '—'),
+    'VALUES REFLECTION: ' + (fv('valWhy') || '—'),
+    '',
+    'GOALS:'
+  ].concat(
+    prodG.map(function(g) { return '  [Income] ' + g; }),
+    dbG.map(function(g)   { return '  [Database] ' + g; }),
+    growG.map(function(g) { return '  [Growth] ' + g; }),
+    lifeG.map(function(g) { return '  [Life] ' + g; }),
+    ['', '30-DAY PRIORITIES:'],
+    p30.map(function(p, i) { return '  ' + (i+1) + '. ' + p; }),
+    ['  Success: ' + (fv('p30w') || '—'), '', '90-DAY PRIORITIES:'],
+    p90.map(function(p, i) { return '  ' + (i+1) + '. ' + p; }),
+    ['  Success: ' + (fv('p90w') || '—'), '', '1-YEAR PRIORITIES:'],
+    p1y.map(function(p, i) { return '  ' + (i+1) + '. ' + p; }),
+    ['  Success: ' + (fv('p1yw') || '—'), '', 'BIG WHY: ' + (fv('bigWhy') || '—'), '', 'AGENT REFLECTION: ' + (fv('agentReflect') || '—'), '', 'STUDENT NOTES: ' + (notes || 'None')]
+  ).join('\n');
+
+  var goalsList = [].concat(
+    prodG.map(function(g) { return '• [Income] ' + g; }),
+    dbG.map(function(g)   { return '• [Database] ' + g; }),
+    growG.map(function(g) { return '• [Growth] ' + g; }),
+    lifeG.map(function(g) { return '• [Life] ' + g; })
+  ).join('\n') || '—';
+
+  var plan30 = p30.map(function(p,i){return (i+1)+'. '+p;}).join('\n') + (fv('p30w') ? '\nWin: '+fv('p30w') : '');
+  var plan90 = p90.map(function(p,i){return (i+1)+'. '+p;}).join('\n') + (fv('p90w') ? '\nWin: '+fv('p90w') : '');
+  var plan1y = p1y.map(function(p,i){return (i+1)+'. '+p;}).join('\n') + (fv('p1yw') ? '\nWin: '+fv('p1yw') : '');
+
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+
+  var coachParams = {
+    to_email: COACH_EMAIL, reply_to: email,
+    student_name: name, student_email: email,
+    agent_focus: agentFocus || '—', agent_exp: agentExp || '—',
+    agent_type: at ? at.title : '—',
+    top_values: topVals.join(', ') || '—',
+    big_why: fv('bigWhy') || '—',
+    coach_notes: notes || 'None',
+    summary_text: summaryText
+  };
+
+  var studentParams = {
+    to_email: email, reply_to: COACH_EMAIL,
+    student_name: name, student_first: firstName,
+    agent_focus: agentFocus || '—', agent_exp: agentExp || '—',
+    agent_type: at ? at.title : '—',
+    agent_type_desc: at ? at.warmDesc : '—',
+    top_values: topVals.map(function(v,i){return (i+1)+'. '+v;}).join('\n') || '—',
+    values_why: fv('valWhy') || '—',
+    big_why: fv('bigWhy') || '—',
+    goals_list: goalsList,
+    plan_30: plan30 || '—',
+    plan_90: plan90 || '—',
+    plan_1y: plan1y || '—'
+  };
+
+  emailjs.send(EMAILJS_SERVICE_ID, COACH_TEMPLATE_ID, coachParams)
+    .then(function() {
+      return emailjs.send(EMAILJS_SERVICE_ID, STUDENT_TEMPLATE_ID, studentParams);
+    })
+    .then(function() {
+      status.textContent = 'You\'re all set! Your coach has your full summary, and a personal copy is on its way to your inbox. Bookmark it — come back to it whenever you need a reminder of why you started.';
+      status.className   = 'email-status success';
+      btn.textContent    = 'Submitted!';
+    })
+    .catch(function(err) {
+      console.error(err);
+      status.textContent = 'Something went wrong. Please take a screenshot and contact your coach directly.';
+      status.className   = 'email-status error';
+      btn.disabled       = false;
+      btn.textContent    = 'Try Again';
+    });
+}
+
+// ── INIT ─────────────────────────────────────────────────
+initValues();
+initQuiz();
+</script>
+</body>
+</html>
